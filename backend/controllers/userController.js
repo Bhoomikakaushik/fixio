@@ -2,8 +2,9 @@ import express from "express";
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import generateAuthToken from "../utils/generateAuthToken.js";
+import BlacklistToken from "../models/blacklistTokenModel.js";
 
-const register = async (req, res) => {
+const registerUser = async (req, res) => {
     const { fullName, email, password } = req.body;
 
 
@@ -44,7 +45,7 @@ const register = async (req, res) => {
      
 }
 
-const login = async (req,res) => {
+const loginUser = async (req,res) => {
     const { email, password } = req.body;   
     if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
@@ -71,4 +72,36 @@ const login = async (req,res) => {
     }
 }
 
-export {register,login}
+const userProfile = async (req, res) => {
+    try {
+        const user = req.user; // User is set by auth middleware
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        return res.status(200).json({ user });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+const logoutUser = async (req,res) => {
+    try {
+        
+        const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+        // console.log("Token to be cleared:", token)
+        if (!token) {
+            return res.status(400).json({ message: "No token provided" });
+        }
+        res.clearCookie("token"); // Clear the cookie
+
+        if (token) {
+            await BlacklistToken.create({ token:token }); // Add token to blacklist
+        }
+
+        return res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+
+}
+export {registerUser,loginUser, userProfile, logoutUser};
