@@ -44,4 +44,31 @@ const register = async (req, res) => {
      
 }
 
-export {register}
+const login = async (req,res) => {
+    const { email, password } = req.body;   
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
+    }
+    try {
+        // Find user by email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "Invalid email or password" });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: "Invalid email or password" });
+        }
+
+        const token = generateAuthToken(user); // Generate auth token
+        res.cookie("token", token, { httpOnly: true }); // Set token in cookie
+
+        return res.status(200).json({ message: "Login successful", token, user });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+export {register,login}
