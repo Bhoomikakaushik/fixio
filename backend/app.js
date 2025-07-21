@@ -6,7 +6,7 @@ import userRoutes from "./routes/userRoute.js";
 import cookieParser from "cookie-parser";
 
 import userModel from "./models/userModel.js";
-config(); // Load environment variables from .ev file
+config(); // Load environment variables 
 
 const app = express();
 const port = process.env.PORT || 3000;

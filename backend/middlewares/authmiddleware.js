@@ -20,7 +20,6 @@ const authUser = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         // console.log("Decoded token:", decoded);
-        // console.log("Decoded user ID:", decoded.id);
         if (!decoded || !decoded.id) { 
             return res.status(401).json({ message: "Invalid token" });
         }

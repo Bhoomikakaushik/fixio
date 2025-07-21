@@ -3,7 +3,6 @@ import {loginUser, registerUser,userProfile,logoutUser} from "../controllers/use
 import authUser from "../middlewares/authmiddleware.js";
 const router = express.Router();
 
-
 router.post("/register",registerUser);
 router.post("/login", loginUser);
 router.get("/profile",authUser, userProfile);
