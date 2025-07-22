@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import Captain from "../models/captainModel.js";
 import generateAuthToken from "../utils/generateAuthToken.js";
+import BlacklistToken from "../models/blacklistTokenModel.js";
 
 const registerCaptain = async (req, res) => {
     const { fullName, email, password, address, contact, isAvailable,services_offered } = req.body;
@@ -82,5 +83,21 @@ const captainProfile = async (req, res) => {
     }
 }
 
+const logoutCaptain = async (req, res) => {
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+        if (!token) {
+            return res.status(401).json({ message: "token not provided" });
+        }
+        res.clearCookie("token"); // Clear the cookie
 
-export { registerCaptain, loginCaptain , captainProfile };
+        if (token) {
+            await BlacklistToken.create({ token:token }); 
+        }
+        return res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+export { registerCaptain, loginCaptain , captainProfile,logoutCaptain };

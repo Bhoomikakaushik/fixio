@@ -57,9 +57,7 @@ const authCaptain = async (req, res, next) => {
             return res.status(401).json({ message: "Invalid token" });
         }
         const captain =   await Captain.findById(decoded.id)
-        // console.log(user)
         req.captain = captain;
-        // console.log("User authenticated:", user);
         return next();
 
     } catch (error) {
