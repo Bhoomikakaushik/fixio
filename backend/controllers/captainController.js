@@ -39,12 +39,36 @@ const registerCaptain = async (req, res) => {
 
         // Save the captain to the database
         await newCaptain.save();
-        return res.status(201).json({ message: "Captain registered successfully", newCaptain });
+        return res.status(201).json({ message: "Captain registered successfully", token,newCaptain });
 
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
     }
 }
 
+const loginCaptain = async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
+    }
+    try {
+        // Find captain by email
+        const captain = await Captain.findOne({ email });
+        if (!captain) {
+            return res.status(400).json({ error: "Invalid email or password" });
+        }   
+        // Check password
+        const isMatch = await bcrypt.compare(password, captain.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: "Invalid email or password" });
+        }
+        const token = generateAuthToken(captain); // Generate auth token
+        res.cookie("token", token, { httpOnly: true }); // Set token in cookie
+        return res.status(200).json({ message: "Login successful", token,captain });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
 
-export { registerCaptain };
+
+export { registerCaptain, loginCaptain };
