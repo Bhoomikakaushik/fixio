@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import mongoose from "mongoose";
 import startdb from "./db/init_db.js";
 import userRoutes from "./routes/userRoute.js";
+import captainRoutes from "./routes/captainRoute.js";
 import cookieParser from "cookie-parser";
 
 import userModel from "./models/userModel.js";
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-enco
 app.use(cookieParser()); // Middleware to parse cookies
 
 app.use("/api/v1/users", userRoutes); 
+app.use("/api/v1/captains", captainRoutes); 
 
 app.get("/",(req,res) =>{
     res.send("hello world")
