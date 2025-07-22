@@ -21,6 +21,28 @@ const captainSchema = new mongoose.Schema({
         required: true,
         min: 6
     },
+    contact:{
+        type: String,
+        required: true,
+        min: 10,
+        max: 10
+    },
+    profile_picture: {
+        type: String,
+        default: "../../uploads/captain/default.png"
+    },
+    address: {
+        type: String,
+        required: true,
+    },
+    services_offered: {
+        type: [String],
+        required: true,
+    },
+    isAvailable: {
+        type: Boolean,
+        default: false,
+    },
     socketId: {
         type: String,
     },
@@ -29,3 +51,6 @@ const captainSchema = new mongoose.Schema({
         default: Date.now,
     }
 });
+
+const Captain = mongoose.model("Captain", captainSchema);
+export default Captain;
