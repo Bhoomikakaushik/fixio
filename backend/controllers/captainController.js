@@ -70,5 +70,17 @@ const loginCaptain = async (req, res) => {
     }
 }
 
+const captainProfile = async (req, res) => {
+    try {
+        const captain = req.captain; 
+        if (!captain) {
+            return res.status(404).json({ error: "Captain not found" });
+        }
+        return res.status(200).json({ captain });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
 
-export { registerCaptain, loginCaptain };
+
+export { registerCaptain, loginCaptain , captainProfile };
