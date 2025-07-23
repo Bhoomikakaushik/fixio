@@ -6,10 +6,24 @@ import BlacklistToken from "../models/blacklistTokenModel.js";
 const registerCaptain = async (req, res) => {
     const { fullName, email, password, address, contact, isAvailable,services_offered } = req.body;
 
-    if (!fullName?.firstName || !email || !password || !address || !contact || !services_offered) {
+    const servicesArray = Array.isArray(services_offered) ? services_offered : [services_offered];
+
+    if (!fullName?.firstName || !email || !password || !address || !contact || !servicesArray[0]) {
         return res.status(400).json({ error: "All fields are required" });
     }
 
+    // const missingFields = [];
+
+    // if (!fullName) missingFields.push("firstName");
+    // if (!email) missingFields.push("email");
+    // if (!password) missingFields.push("password");
+    // if (!address) missingFields.push("address");
+    // if (!contact) missingFields.push("contact");
+
+    // if (missingFields.length > 0) {
+    //     console.log("Missing Fields:", missingFields);
+    //     return res.status(400).json({ error: `Missing required fields: ${missingFields.join(", ")}` });
+    // }
     try {
         // Check if captain already exists
         const existingCaptain = await Captain.findOne({ email });
