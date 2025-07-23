@@ -20,6 +20,8 @@ const registerCaptain = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        const profile_picture = req.file ? req.file.path : "../../uploads/captain/default.png";
+
         // Create new captain
         const newCaptain = new Captain({
             fullName: {
@@ -32,7 +34,7 @@ const registerCaptain = async (req, res) => {
             address,
             services_offered,
             isAvailable: isAvailable || false,
-            // profile_picture: req.file ? req.file.path : "../../uploads/captain/default.png",
+            profile_picture: profile_picture,
         });
 
         const token = generateAuthToken(newCaptain); // Generate auth token

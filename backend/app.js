@@ -1,20 +1,23 @@
 import express from "express";
 import { config } from "dotenv";    
+config(); // Load environment variables 
 import mongoose from "mongoose";
 import startdb from "./db/init_db.js";
 import userRoutes from "./routes/userRoute.js";
 import captainRoutes from "./routes/captainRoute.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import userModel from "./models/userModel.js";
-config(); // Load environment variables 
+
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json()); // Middleware to parse JSON requests
-app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
-app.use(cookieParser()); // Middleware to parse cookies
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.static(path.join("public")));
+app.use(cookieParser());
 
 app.use("/api/v1/users", userRoutes); 
 app.use("/api/v1/captains", captainRoutes); 
