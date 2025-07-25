@@ -1,7 +1,7 @@
 import React, { useContext,useState } from "react";
 import { UserDataContext } from "../../context/userContext.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link} from "react-router-dom";
   
 
 const RegisterUser = () => {
@@ -65,7 +65,7 @@ const RegisterUser = () => {
         />
       </div>
       {/* Right: Form */}
-      <div className="w-1/2 flex items-center justify-center bg-white gap-4">
+      <div className="w-1/2 flex items-center justify-center flex-col  bg-white gap-4">
         <form
           className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg"
           onSubmit={handleSubmit}
@@ -121,6 +121,14 @@ const RegisterUser = () => {
             Sign Up
           </button>
         </form>
+        <div className="w-full max-w-md text-center mt-4">
+          <p className="text-center mt-4">
+            Already have an account?{" "}
+            <Link to="/login-user" className="text-blue-600 hover:underline">
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
