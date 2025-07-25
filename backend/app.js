@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoute.js";
 import captainRoutes from "./routes/captainRoute.js";
 import cookieParser from "cookie-parser";
 import path from "path";
+import cors from "cors";
 
 import userModel from "./models/userModel.js";
 
@@ -16,6 +17,10 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
+app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+})); // Enable CORS for the frontend URL
 app.use(express.static(path.join("public")));
 app.use(cookieParser());
 
