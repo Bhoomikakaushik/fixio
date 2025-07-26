@@ -129,6 +129,14 @@ const RegisterUser = () => {
             </Link>
           </p>
         </div>
+        <div className="w-full max-w-md text-center mt-4">
+          <p className="text-center mt-4">
+            Want to register as a captain?{" "}
+            <Link to="/register-captain" className="text-blue-600 hover:underline">
+              Register as Captain
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

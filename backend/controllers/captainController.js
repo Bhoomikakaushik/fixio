@@ -28,7 +28,7 @@ const registerCaptain = async (req, res) => {
         // Check if captain already exists
         const existingCaptain = await Captain.findOne({ email });
         if (existingCaptain) {
-            return res.status(400).json({ error: "Captain already exists" });
+            return res.status(400).json({ message: "Captain already exists" });
         }
 
         // Hash the password
